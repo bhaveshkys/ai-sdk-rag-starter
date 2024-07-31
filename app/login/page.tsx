@@ -14,7 +14,7 @@ export default function LoginForm() {
     const { error, data } = await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: `https://ragchatbot-defenderwarrior69gmailcoms-projects.vercel.app/auth/callback`,
       },
     });
 
