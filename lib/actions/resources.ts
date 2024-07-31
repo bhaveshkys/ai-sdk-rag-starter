@@ -1,25 +1,47 @@
-"use server";
+'use server';
 
 import {
   NewResourceParams,
   insertResourceSchema,
   resources,
-} from "@/lib/db/schema/resources";
-import { db } from "../db";
+} from '@/lib/db/schema/resources';
+import { supabase } from '@/lib/supabaseClient';
+import { generateEmbeddings } from '../ai/embedding';
+import { embeddings as embeddingsTable } from '../db/schema/embeddings';
 
 export const createResource = async (input: NewResourceParams) => {
   try {
-    const payload = insertResourceSchema.parse(input);
+    const { content } = insertResourceSchema.parse(input);
 
-    const contentWithoutLineBreaks = payload.content.replace("\n", " ");
-    const [resource] = await db
-      .insert(resources)
-      .values({ content: contentWithoutLineBreaks })
-      .returning();
+    const { data: resource, error: insertError } = await supabase
+    .from('resources')
+    .insert([{ content }])
+    .select()
+    .single();
 
-    return "Resource successfully created.";
-  } catch (e) {
-    if (e instanceof Error)
-      return e.message.length > 0 ? e.message : "Error, please try again.";
+    if (insertError) {
+      console.log(insertError.message)
+      throw new Error(insertError.message);
+    }
+
+    const embeddings = await generateEmbeddings(content);
+    const { error: embeddingsError } = await supabase
+      .from('embeddings')
+      .insert(
+        embeddings.map(embedding => ({
+          resource_id: resource.id,
+          ...embedding,
+        })),
+      );
+
+      if (embeddingsError) {
+        console.log(embeddingsError.message)
+        throw new Error(embeddingsError.message);
+      }
+    return 'Resource successfully created and embedded.';
+  } catch (error) {
+    return error instanceof Error && error.message.length > 0
+      ? error.message
+      : 'Error, please try again.';
   }
 };
