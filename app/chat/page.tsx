@@ -19,9 +19,8 @@ export default function Chat() {
   });
   async function handleSignOut() {
     try {
-      await signOutAction();
-      // Handle successful sign-out, e.g., redirect to login page
-      redirect("/login")
+      const response= await signOutAction();
+        redirect("/login")
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -55,7 +54,7 @@ export default function Chat() {
     <div className="flex flex-col w-full  mx-auto h-screen">
       {/* Navbar */}
       <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
-        <div className="text-xl font-bold">Chat Application</div>
+        <div className="text-xl font-bold">recipe bot</div>
         <button
           className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded"
           onClick={handleSignOut}
