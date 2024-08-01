@@ -12,7 +12,7 @@ const page = () => {
     <div className='w-[75%] md:w-1/2 mx-auto mt-36'>
     <EmojiBanner/>
       <div className='font-sans font-bold md:text-4xl text-center text-[#e46a6a] mt-10 '> Your ultimate culinary companion</div>
-      <div className='font-sans font-medium md:text-2xl text-center text-gray-900 mt-5 mb-10'> Whether you're a seasoned chef or a kitchen novice, RecipeBot has something special for everyone.</div>
+      <div className='font-sans font-medium md:text-2xl text-center text-gray-900 mt-5 mb-10'> Whether you are a seasoned chef or a kitchen novice, RecipeBot has something special for everyone.</div>
       <EmojiBanner/>
     </div>
     </div>
