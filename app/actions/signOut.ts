@@ -5,8 +5,15 @@ import { redirect } from 'next/navigation';
 
 export async function signOut() {
   const supabase = createClient();
+  try{
   await supabase.auth.signOut();
-    redirect("/login")
+
+  }catch(error){
+    console.log(error)
+  }
+  finally{
+    redirect("/")
+  }
 
   // Optionally, you can return some data or handle post-sign-out logic here
   

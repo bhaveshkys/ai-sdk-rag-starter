@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
   console.log("main middleware user",user) 
   if (!user && !(request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/login'))) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
   return response;
 }
